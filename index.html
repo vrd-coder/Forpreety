@@ -2,93 +2,107 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>From Padhoo 💙</title>
+<title>For You 💙</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
 body{
 margin:0;
 padding:0;
-background:linear-gradient(135deg,#40e0d0,#008b8b);
-font-family:Georgia,serif;
-text-align:center;
-color:white;
+font-family:'Poppins',sans-serif;
+background:linear-gradient(135deg,#c8f7f4,#8ee7e1);
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
 overflow:hidden;
 }
 
-.container{
-padding:40px 20px;
+.card{
+background:white;
+width:90%;
+max-width:380px;
+padding:25px;
+border-radius:25px;
+box-shadow:0 20px 40px rgba(0,0,0,0.15);
+text-align:center;
+animation:fadeIn 1.5s ease;
+position:relative;
+}
+
+@keyframes fadeIn{
+from{opacity:0; transform:translateY(20px);}
+to{opacity:1; transform:translateY(0);}
 }
 
 h1{
-font-size:22px;
-line-height:1.6;
-min-height:140px;
-}
-
-.small{
-font-size:16px;
-opacity:0.9;
-margin-top:10px;
+color:#00a9a5;
+margin-bottom:15px;
 }
 
 img{
-width:85%;
-max-width:260px;
+width:100%;
 border-radius:20px;
-margin-top:25px;
-box-shadow:0 0 20px rgba(0,0,0,0.3);
+margin-bottom:15px;
+}
+
+p{
+font-size:15px;
+color:#555;
+line-height:1.6;
 }
 
 button{
-padding:12px 24px;
-font-size:16px;
+padding:12px 18px;
 border:none;
 border-radius:30px;
-margin:12px;
+font-size:14px;
+margin:8px;
 cursor:pointer;
+transition:0.3s;
 }
 
-#musicBtn{
-background:#005f5f;
+.yes{
+background:linear-gradient(45deg,#00c9a7,#008b8b);
 color:white;
 }
 
-#continueBtn{
-background:white;
-color:#008b8b;
-font-weight:bold;
+.no{
+background:#6bbfcf;
+color:white;
+position:relative;
 }
 
-.heart{
-position:absolute;
-font-size:18px;
-animation:float 6s linear infinite;
+.music{
+background:#004c4c;
+color:white;
 }
 
-@keyframes float{
-0%{transform:translateY(0);opacity:1;}
-100%{transform:translateY(-800px);opacity:0;}
+button:hover{
+transform:scale(1.05);
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
-
-<h1 id="text"></h1>
-
-<div class="small">
-8 February — Padhoo GC 💙
-</div>
+<div class="card" id="card">
+<h1>For You 💙</h1>
 
 <img src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif">
 
-<br>
+<p>
+Hey 💙<br>
+I kind of like you a lot…<br>
+You’ve unknowingly become very special to me 🥺<br><br>
+Will you be mine? 💍
+</p>
 
-<button id="musicBtn" onclick="playMusic()">🎵 Play Lag Jaa Gale</button>
+<button class="yes" onclick="yesClicked()">Of courseee 🤝</button>
+<button class="no" id="noBtn" onclick="moveNo()">No 🥺</button>
 <br>
-<button id="continueBtn" onclick="nextPage()">Continue 💙</button>
+<button class="music" onclick="playMusic()">🎵 Tap to play music</button>
 
 <audio id="bgMusic">
 <source src="lagjaagale.mp3" type="audio/mpeg">
@@ -98,51 +112,27 @@ animation:float 6s linear infinite;
 
 <script>
 
-const message="It all started in a GC called Padhoo... I joined for HSC boards. But I stayed because of you. 💙 We became twin best friends in just a few days... and somewhere in between, you became special to me.";
-
-let i=0;
-
-function typeWriter(){
-if(i<message.length){
-document.getElementById("text").innerHTML+=message.charAt(i);
-i++;
-setTimeout(typeWriter,45);
-}
+function moveNo(){
+const btn=document.getElementById("noBtn");
+btn.style.position="absolute";
+btn.style.left=Math.random()*250+"px";
+btn.style.top=Math.random()*250+"px";
 }
 
-function nextPage(){
+function yesClicked(){
 document.body.innerHTML=`
-<div style="margin-top:120px;padding:20px;text-align:center;color:white;">
-<h1 style="font-size:22px;line-height:1.6;">
-Kaju Katli 💙<br><br>
-I don't want to rush anything.<br>
-I don’t want to lose our twin bond either.<br><br>
-But I also don’t want to ignore how I feel.<br><br>
-Maybe... just maybe... this is something more?<br><br>
-What do you think? 💫
-</h1>
-<img src="https://media.giphy.com/media/3oz8xIsloV7zOmt81G/giphy.gif" style="width:85%;max-width:260px;border-radius:20px;margin-top:25px;">
+<div style="display:flex;justify-content:center;align-items:center;height:100vh;background:linear-gradient(135deg,#c8f7f4,#8ee7e1);">
+<div style="background:white;padding:30px;border-radius:25px;text-align:center;width:90%;max-width:380px;">
+<h1 style="color:#00a9a5;">Yesssss 💙</h1>
+<img src="https://media.giphy.com/media/5GoVLqeAOo6PK/giphy.gif" style="width:100%;border-radius:20px;margin:15px 0;">
+<p style="color:#555;">Now you are officially mine forever 💙</p>
+</div>
 </div>`;
-document.body.style.background="linear-gradient(135deg,#20b2aa,#004c4c)";
 }
 
 function playMusic(){
 document.getElementById("bgMusic").play();
 }
-
-function createHeart(){
-const heart=document.createElement("div");
-heart.classList.add("heart");
-heart.innerHTML="💙";
-heart.style.left=Math.random()*window.innerWidth+"px";
-heart.style.top=window.innerHeight+"px";
-document.body.appendChild(heart);
-setTimeout(()=>heart.remove(),6000);
-}
-
-setInterval(createHeart,600);
-
-typeWriter();
 
 </script>
 
