@@ -1,140 +1,249 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For You 💙</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<title>For You, Preety 💙</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+
 body{
-margin:0;
-padding:0;
-font-family:'Poppins',sans-serif;
-background:linear-gradient(135deg,#c8f7f4,#8ee7e1);
+height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
-height:100vh;
+background:linear-gradient(135deg,#d4f9f6,#a8edea);
 overflow:hidden;
 }
 
-.card{
-background:white;
-width:90%;
-max-width:380px;
-padding:25px;
-border-radius:25px;
-box-shadow:0 20px 40px rgba(0,0,0,0.15);
-text-align:center;
-animation:fadeIn 1.5s ease;
-position:relative;
+/* Floating Emojis */
+.emoji{
+position:absolute;
+font-size:22px;
+animation:floatUp 6s linear infinite;
+opacity:0.8;
+pointer-events:none;
+}
+@keyframes floatUp{
+0%{transform:translateY(100vh);opacity:0;}
+20%{opacity:1;}
+100%{transform:translateY(-10vh);opacity:0;}
 }
 
-@keyframes fadeIn{
-from{opacity:0; transform:translateY(20px);}
-to{opacity:1; transform:translateY(0);}
+/* Card */
+.container{
+background:white;
+padding:30px;
+border-radius:25px;
+width:100%;
+max-width:400px;
+text-align:center;
+box-shadow:0 0 0 3px rgba(0,150,136,0.4);
+animation:glow 3s infinite alternate, scaleIn 0.6s ease;
+transition:opacity 0.5s ease;
+}
+
+@keyframes glow{
+from{box-shadow:0 0 15px rgba(0,150,136,0.3);}
+to{box-shadow:0 0 30px rgba(0,150,136,0.6);}
+}
+
+@keyframes scaleIn{
+from{transform:scale(0.9);opacity:0;}
+to{transform:scale(1);opacity:1;}
 }
 
 h1{
-color:#00a9a5;
-margin-bottom:15px;
+color:#009688;
+margin-bottom:10px;
 }
 
-img{
+.gif{
 width:100%;
-border-radius:20px;
-margin-bottom:15px;
+border-radius:15px;
+margin:15px 0;
 }
 
-p{
-font-size:15px;
-color:#555;
-line-height:1.6;
+.type-line{
+font-size:1.05em;
+color:#444;
+min-height:1.4em;
+margin-bottom:8px;
+white-space:pre-wrap;
+}
+
+.buttons{
+display:flex;
+justify-content:center;
+gap:15px;
+margin-top:20px;
 }
 
 button{
-padding:12px 18px;
+padding:10px 20px;
 border:none;
 border-radius:30px;
-font-size:14px;
-margin:8px;
+font-weight:600;
 cursor:pointer;
+color:white;
 transition:0.3s;
 }
 
-.yes{
-background:linear-gradient(45deg,#00c9a7,#008b8b);
-color:white;
+#yesBtn{
+background:linear-gradient(45deg,#00c9a7,#009688);
+}
+#yesBtn:hover{
+transform:scale(1.05);
 }
 
-.no{
-background:#6bbfcf;
-color:white;
+#noBtn{
+background:#80deea;
 position:relative;
 }
 
-.music{
-background:#004c4c;
-color:white;
+.footer{
+margin-top:15px;
+font-size:12px;
+color:#777;
 }
 
-button:hover{
-transform:scale(1.05);
-}
+.fade-out{opacity:0;}
 </style>
 </head>
 
 <body>
 
-<div class="card" id="card">
-<h1>For You 💙</h1>
+<div class="container" id="mainBox">
+<h1>For You, Preety 💙</h1>
+<img class="gif" src="sakuta-mai.gif">
+<div id="textLines"></div>
 
-<img src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif">
-
-<p>
-Hey 💙<br>
-I kind of like you a lot…<br>
-You’ve unknowingly become very special to me 🥺<br><br>
-Will you be mine? 💍
-</p>
-
-<button class="yes" onclick="yesClicked()">Of courseee 🤝</button>
-<button class="no" id="noBtn" onclick="moveNo()">No 🥺</button>
-<br>
-<button class="music" onclick="playMusic()">🎵 Tap to play music</button>
-
-<audio id="bgMusic">
-<source src="lagjaagale.mp3" type="audio/mpeg">
-</audio>
-
+<div class="buttons">
+<button id="yesBtn" onclick="confirmYes()">Of courseee 🤝</button>
+<button id="noBtn" onclick="moveNo()">No 🥺</button>
 </div>
+
+<div class="footer">Since 8 Feb 💙</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
 <script>
 
+/* Click Sound */
+const clickSound = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-soft-click-1124.mp3");
+
+/* Move No Button */
 function moveNo(){
+clickSound.play();
 const btn=document.getElementById("noBtn");
+const container=document.querySelector(".container");
+const maxX=container.offsetWidth-btn.offsetWidth-20;
+const maxY=container.offsetHeight-btn.offsetHeight-20;
 btn.style.position="absolute";
-btn.style.left=Math.random()*250+"px";
-btn.style.top=Math.random()*250+"px";
+btn.style.left=Math.random()*maxX+"px";
+btn.style.top=Math.random()*maxY+"px";
 }
 
-function yesClicked(){
+/* Confirm Yes */
+function confirmYes(){
+clickSound.play();
+if(confirm("Are you really sure, Preety? 💙")){
+showSuccess();
+}
+}
+
+/* Success Page */
+function showSuccess(){
+const box=document.getElementById("mainBox");
+box.classList.add("fade-out");
+
+setTimeout(()=>{
 document.body.innerHTML=`
-<div style="display:flex;justify-content:center;align-items:center;height:100vh;background:linear-gradient(135deg,#c8f7f4,#8ee7e1);">
-<div style="background:white;padding:30px;border-radius:25px;text-align:center;width:90%;max-width:380px;">
-<h1 style="color:#00a9a5;">Yesssss 💙</h1>
-<img src="https://media.giphy.com/media/5GoVLqeAOo6PK/giphy.gif" style="width:100%;border-radius:20px;margin:15px 0;">
-<p style="color:#555;">Now you are officially mine forever 💙</p>
+<div class="container" style="background:#e0f7f5;">
+<h1 style="color:#009688;">Yesssss 💙</h1>
+<img class="gif" src="anime-hug.gif">
+<p style="color:#444;">Preety, you’re officially my forever 💞</p>
+<p style="color:#444;">No matter what happens, I’m always with you 🫶🏻</p>
+
+<button id="playBtn" style="margin-top:15px;background:#009688;color:white;border:none;border-radius:25px;padding:10px 20px;">
+🔊 Tap to play music
+</button>
+
+<button onclick="window.open('https://instagram.com/bettercallvrd', '_blank')" 
+style="margin-top:12px;background:#e1306c;color:white;border:none;border-radius:25px;padding:10px 20px;font-weight:600;">
+Take me to Instagram 💗
+</button>
+
+<div class="footer">From 8 Feb to Forever 💙</div>
 </div>
-</div>`;
+
+<audio id="bgMusic" src="lagjaagale.mp3" loop></audio>
+`;
+
+confetti({
+particleCount:400,
+spread:180,
+startVelocity:45,
+scalar:1.2,
+origin:{y:0.6}
+});
+
+const playBtn=document.getElementById("playBtn");
+const music=document.getElementById("bgMusic");
+playBtn.onclick=()=>{
+music.play();
+playBtn.remove();
+};
+},500);
 }
 
-function playMusic(){
-document.getElementById("bgMusic").play();
+/* Floating Emojis */
+const emojis=["💙","✨","🌸","💫","🫶🏻"];
+function spawnEmoji(){
+const e=document.createElement("div");
+e.className="emoji";
+e.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+e.style.left=Math.random()*100+"vw";
+document.body.appendChild(e);
+setTimeout(()=>e.remove(),6000);
 }
+setInterval(spawnEmoji,700);
+
+/* Typewriter */
+const lines=[
+"Hey Preety 👀",
+"I kind of like you a lot...",
+"You’ve unknowingly become very special to me 🥺",
+"So... will you be my love for life? 👉🏻👈🏻"
+];
+
+let currentLine=0;
+
+function typeNextLine(){
+if(currentLine>=lines.length)return;
+const div=document.createElement("div");
+div.className="type-line";
+document.getElementById("textLines").appendChild(div);
+
+let i=0;
+function typeChar(){
+if(i<lines[currentLine].length){
+div.textContent+=lines[currentLine].charAt(i);
+i++;
+setTimeout(typeChar,40);
+}else{
+currentLine++;
+setTimeout(typeNextLine,400);
+}
+}
+typeChar();
+}
+
+window.onload=typeNextLine;
 
 </script>
-
 </body>
 </html>
